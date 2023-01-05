@@ -8,41 +8,26 @@
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
     <script type="text/javascript">
 
-        //아이디 체크여부 확인 (아이디 중복일 경우 = 0 , 중복이 아닐경우 = 1 )
-        var idck = 0;
-        $(function() {
-            //idCheck 버튼을 클릭했을 때
-            $("#idCheck").click(function() {
+        $(document).ready(function () {
 
-                //input_id 를 param.
-                var userid =  $("#input_id").val();
+            // 아이디 중복 확인 버튼 눌렀을 시 아이디 중복 체크 해주는 메소드
+            $("#idCheck").click(function() {
+                // input_id 를 param.
+                let userid =  $("#input_id").val();
 
                 $.ajax({
                     async: true,
                     type : 'POST',
                     data : userid,
-                    url : "member/id_confirm",
+                    url : "id_confirm",
                     dataType : "json",
                     contentType: "application/json; charset=UTF-8",
                     success : function(data) {
-                        if (data.cnt > 0) {
-
+                        if (data > 0) {
                             alert("아이디가 존재합니다. 다른 아이디를 입력해주세요.");
-                            //아이디가 존제할 경우 빨깡으로 , 아니면 파랑으로 처리하는 디자인
-                            $("#divInputId").addClass("has-error")
-                            $("#divInputId").removeClass("has-success")
-                            $("#userid").focus();
-
-
-                        } else {
+                        }
+                        else {
                             alert("사용가능한 아이디입니다.");
-                            //아이디가 존제할 경우 빨깡으로 , 아니면 파랑으로 처리하는 디자인
-                            $("#divInputId").addClass("has-success")
-                            $("#divInputId").removeClass("has-error")
-                            $("#userpwd").focus();
-                            //아이디가 중복하지 않으면  idck = 1
-                            idck = 1;
-
                         }
                     },
                     error : function(error) {
@@ -51,16 +36,40 @@
                     }
                 });
             });
-        });
 
-        $(document).ready(function () {
+            // 닉네임 중복 확인 버튼 눌렀을 시 닉네임 중복 체크 해주는 메소드
+            $("#nicknameCheck").click(function() {
+                // input_id 를 param.
+                let userNickname =  $("#input_nickname").val();
+
+                $.ajax({
+                    async: true,
+                    type : 'POST',
+                    data : userNickname,
+                    url : "nickname_confirm",
+                    dataType : "json",
+                    contentType: "application/json; charset=UTF-8",
+                    success : function(data) {
+                        if (data > 0) {
+                            alert("닉네임이 존재합니다. 다른 닉네임를 입력해주세요.");
+                        }
+                        else {
+                            alert("사용가능한 닉네임입니다.");
+                        }
+                    },
+                    error : function(error) {
+
+                        alert("error : " + error);
+                    }
+                });
+            });
 
             $("#signInForm").submit(function (event) {
 
                 event.preventDefault();
 
                 let id = $("#input_id").val();
-                let pw = $("#input_pw").val();
+                let password = $("#input_pw").val();
                 let name = $("#input_name").val();
                 let tel = $("#input_tel").val();
                 let email = $("#input_email").val();
@@ -68,8 +77,8 @@
 
 
                 let form = {
-                    id: id,
-                    pw : pw,
+                    id : id,
+                    password : password,
                     name : name,
                     tel : tel,
                     email : email,
@@ -86,7 +95,7 @@
                     data : JSON.stringify(form),
                     success : function (result) {
                         console.log(result);
-                        $(location).attr('href', '/');
+                        $(location).attr('href', '/tomato');
                     },
                     error : function (e) {
                         console.log(e);
@@ -102,25 +111,44 @@
     <form id="signInForm" action="join" method="post">
         <tr>
             <td>아이디</td>
-            <td><input id="input_id" type="text" name="id" size="50">
-                <button id="idCheck">아이디 중복 확인</button>
+            <td>
+                <input id="input_id" type="text" name="id" size="50">
+                <input id="idCheck" type="button" value="아이디 중복 확인">
             </td>
         </tr>
         <tr>
-            <td>도로명코드(api?)</td>
-            <td><input id="input_code" type="text" name="code" size="50"></td>
-        </tr>
-        <tr>
-            <td>읍연동일련번호(api?)</td>
-            <td><input id="input_dong_id" type="text" name="dong_id" size="50"></td>
+            <td>주소</td>
+            <td>
+                시/도
+                <select name="input_sido_name">
+                    <option>선택하세요</option>
+                    <c:forEach var="sido_name" items="${sido_names}">
+                        <option value="${sido_name}">${sido_name}</option>
+                    </c:forEach>
+                </select>
+                시/군/구
+                <select name="input_sigungu_name">
+                    <option>선택하세요</option>
+                    <c:forEach var="sigungu_name" items="${sigungu_names}">
+                        <option value="${sigungu_name}">${sigungu_name}</option>
+                    </c:forEach>
+                </select>
+                읍/면/동
+                <select name="input_dong_name">
+                    <option>선택하세요</option>
+                    <c:forEach var="dong_name" items="${dong_names}">
+                        <option value="${dong_name}">${dong_name}</option>
+                    </c:forEach>
+                </select>
+            </td>
         </tr>
         <tr>
             <td>패스워드</td>
-            <td><input id="input_pw" type="text" name="pw" size="50"></td>
+            <td><input id="input_pw" type="password" name="password" size="50"></td>
         </tr>
         <tr>
             <td>패스워드 확인</td>
-            <td><input id="input_pwCheck" type="text" name="pwCheck" size="50"></td>
+            <td><input id="input_pwCheck" type="password" name="pwCheck" size="50"></td>
         </tr>
         <tr>
             <td>이름</td>
@@ -137,10 +165,13 @@
         </tr>
         <tr>
             <td>닉네임</td>
-            <td><input id="input_nickname" type="text" name="nickname" size="50"></td>
+            <td>
+                <input id="input_nickname" type="text" name="nickname" size="50">
+                <input id="nicknameCheck" type="button" value="닉네임 중복 확인">
+            </td>
         </tr>
         <tr>
-            <td colspan="2"><input type="submit" value="가입"></td>
+            <td colspan="2"><input type="submit" value="회원가입"></td>
         </tr>
     </form>
 </table>

@@ -14,6 +14,7 @@
               VALUES (member_no_seq.nextval, #{id}, #{password}, #{name}, #{tel}, #{email}, #{nickname})
         ]]>
     </insert>
+
     <select id="idCheck" parameterType="String" resultType="Integer">
         <![CDATA[
               SELECT COUNT(*) FROM MEMBERS
@@ -21,4 +22,16 @@
         ]]>
     </select>
 
+    <select id="nicknameCheck" parameterType="String" resultType="Integer">
+        <![CDATA[
+              SELECT COUNT(*) FROM MEMBERS
+              WHERE NICKNAME = #{nickname}
+        ]]>
+    </select>
+
+    <select id="getSidoNameList" resultType="string">
+        <![CDATA[
+              SELECT DISTINCT SIDO_NAME FROM ADDRESS
+        ]]>
+    </select>
 </mapper>

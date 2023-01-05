@@ -6,6 +6,9 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Slf4j
 @Service
 public class MemberServiceImpl implements MemberService {
@@ -25,8 +28,37 @@ public class MemberServiceImpl implements MemberService {
     @Override
     public int id_confirm(String userid) {
 
-        log.info("id_confirm() ..");
+        log.info("id_check() ..");
 
-       return memberMapper.idCheck(userid);
+        int idCheckNum = memberMapper.idCheck(userid);
+
+        log.info("DB val : " + idCheckNum);
+
+
+        return idCheckNum;
+    }
+
+    @Override
+    public int nickname_confirm(String userNickname) {
+
+        log.info("nickname_check() ..");
+
+        int nicknameCheckNum = memberMapper.nicknameCheck(userNickname);
+
+        log.info("DB val : " + nicknameCheckNum);
+
+        return nicknameCheckNum;
+    }
+
+    @Override
+    public List<String> sidoNameList() {
+
+        log.info("get sidoName_list() ..");
+
+        List<String> sidoNames = memberMapper.getSidoNameList();
+
+        log.info("DB String List : " + sidoNames.toString());
+
+        return sidoNames;
     }
 }
