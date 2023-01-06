@@ -37,9 +37,72 @@
                 });
             });
 
+            // 시/도를 선택했을때 다음 시/군/구 리스트 항목 재구성하는 메소드
+            $("#sido_name").change(function() {
+                // sido_name 를 param.
+                let sido_name =  $("#sido_name").val();
+
+                $.ajax({
+                    async: true,
+                    type : 'POST',
+                    data : sido_name,
+                    url : "sigunguName_list",
+                    dataType : "json",
+                    contentType: "application/json; charset=UTF-8",
+                    success : function(data) {
+
+                        var len = data.length;
+
+                        $("#sigungu_name").empty();
+                        $("#sigungu_name").append("<option value='" + "선택하세요" + "'>" + "선택하세요" + "</option>");
+
+                        for(var i = 0; i<len; i++) {
+                            var sigungu_name = data[i];
+                            $("#sigungu_name").append("<option value='" + sigungu_name + "'>" + sigungu_name + "</option>");
+                        }
+                    },
+                    error : function(error) {
+
+                        alert("error : " + error);
+                    }
+                });
+            });
+
+            // 시/군/구 를 선택했을때 다음 동 리스트 항목 재구성하는 메소드
+            $("#sigungu_name").change(function() {
+                // sido_name, sigungu_name 를 param.
+                let sido_name =  $("#sido_name").val();
+                let sigungu_name = $("#sigungu_name").val();
+
+                $.ajax({
+                    async: true,
+                    type : 'POST',
+                    data : sido_name,
+                    url : "dongName_list",
+                    dataType : "json",
+                    contentType: "application/json; charset=UTF-8",
+                    success : function(data) {
+
+                        var len = data.length;
+
+                        $("#dong_name").empty();
+                        $("#dong_name").append("<option value='" + "선택하세요" + "'>" + "선택하세요" + "</option>");
+
+                        for(var i = 0; i<len; i++) {
+                            var dong_name = data[i];
+                            $("#dong_name").append("<option value='" + dong_name + "'>" + dong_name + "</option>");
+                        }
+                    },
+                    error : function(error) {
+
+                        alert("error : " + error);
+                    }
+                });
+            });
+
             // 닉네임 중복 확인 버튼 눌렀을 시 닉네임 중복 체크 해주는 메소드
             $("#nicknameCheck").click(function() {
-                // input_id 를 param.
+                // input_nickname 를 param.
                 let userNickname =  $("#input_nickname").val();
 
                 $.ajax({
@@ -50,6 +113,7 @@
                     dataType : "json",
                     contentType: "application/json; charset=UTF-8",
                     success : function(data) {
+
                         if (data > 0) {
                             alert("닉네임이 존재합니다. 다른 닉네임를 입력해주세요.");
                         }
@@ -120,21 +184,18 @@
             <td>주소</td>
             <td>
                 시/도
-                <select name="input_sido_name">
+                <select id="sido_name" name="input_sido_name">
                     <option>선택하세요</option>
                     <c:forEach var="sido_name" items="${sido_names}">
                         <option value="${sido_name}">${sido_name}</option>
                     </c:forEach>
                 </select>
                 시/군/구
-                <select name="input_sigungu_name">
+                <select id="sigungu_name" name="input_sigungu_name">
                     <option>선택하세요</option>
-                    <c:forEach var="sigungu_name" items="${sigungu_names}">
-                        <option value="${sigungu_name}">${sigungu_name}</option>
-                    </c:forEach>
                 </select>
                 읍/면/동
-                <select name="input_dong_name">
+                <select id="dong_name" name="input_dong_name">
                     <option>선택하세요</option>
                     <c:forEach var="dong_name" items="${dong_names}">
                         <option value="${dong_name}">${dong_name}</option>
