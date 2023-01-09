@@ -1,6 +1,8 @@
 package com.example.tomato.controller;
 
+import com.example.tomato.service.AddressService;
 import com.example.tomato.service.MemberService;
+import com.example.tomato.vo.AddressVO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,15 +19,15 @@ import java.util.List;
 public class MemberController {
 
     @Autowired
-    private MemberService memberService;
+    private AddressService addressService;
 
     @GetMapping("/signup_view")
     public String signup_view(Model model) {
 
         log.info("signup_view() ..");
 
-        List<String> sidoNames = new ArrayList<>();
-        sidoNames = memberService.sidoNameList();
+        List<AddressVO> sidoNames = new ArrayList<>();
+        sidoNames = addressService.sidoNameList();
 
         model.addAttribute("sido_names", sidoNames);
 

@@ -6,10 +6,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -45,25 +42,6 @@ public class MemberRestController {
         System.out.println(userNickname);
 
         return memberService.nickname_confirm(userNickname);
-    }
-
-    // 주소 중 시/도 리스트를 받아서 화면단에 셀렉트에 정보를 넣어준다.
-    @PostMapping("/sigunguName_list")
-    public List<String> sigunguName_list(@RequestBody String sidoName) {
-
-        log.info("sigunguName_list() ..");
-
-        return memberService.sigunguNameList(sidoName);
-    }
-
-    @PostMapping("/dongName_list")
-    public List<String> dongName_list(@RequestBody String sidoName, @RequestBody String sigunguName) {
-
-        log.info("dongName_list() ..");
-
-        log.info(sidoName + " " + sigunguName);
-
-        return memberService.dongNameList(sidoName, sigunguName);
     }
 
     // http://localhost:8282/tomato/member/signup

@@ -10,8 +10,8 @@
     <!-- 주소 관련 테이블이 없어서 임시적으로 주소 컬럼 데이터를 제외한 데이터를 추가 -->
     <insert id="insertMember">
         <![CDATA[
-              INSERT INTO MEMBERS (NO, ID, PASSWORD, NAME, TEL, EMAIL, NICKNAME)
-              VALUES (member_no_seq.nextval, #{id}, #{password}, #{name}, #{tel}, #{email}, #{nickname})
+              INSERT INTO MEMBERS (NO, ID, ADDRESS_NO, PASSWORD, NAME, TEL, EMAIL, NICKNAME)
+              VALUES (member_no_seq.nextval, #{id}, #{no}, #{password}, #{name}, #{tel}, #{email}, #{nickname})
         ]]>
     </insert>
 
@@ -29,9 +29,4 @@
         ]]>
     </select>
 
-    <select id="getSidoNameList" resultType="string">
-        <![CDATA[
-              SELECT DISTINCT SIDO_NAME FROM ADDRESS
-        ]]>
-    </select>
 </mapper>

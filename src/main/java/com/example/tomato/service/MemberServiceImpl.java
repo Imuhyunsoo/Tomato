@@ -49,40 +49,4 @@ public class MemberServiceImpl implements MemberService {
 
         return nicknameCheckNum;
     }
-
-    @Override
-    public List<String> sidoNameList() {
-
-        log.info("get sidoNameList() ..");
-
-        List<String> sidoNames = memberMapper.getSidoNameList();
-
-        log.info("DB String List : " + sidoNames.toString());
-
-        return sidoNames;
-    }
-
-    @Override
-    public List<String> sigunguNameList(String sidoName) {
-
-        log.info("get sigunguNameList() ..");
-
-        List<String> sigungusNames = memberMapper.getSigunguNameList(sidoName);
-
-        log.info("DB String List : " + sigungusNames.toString());
-
-        return sigungusNames;
-    }
-
-    @Override
-    public List<String> dongNameList(String sidoName, String dongName) {
-
-        log.info("get dongNameList() ..");
-
-        List<String> dongNames = memberMapper.getDongNameList(sidoName, dongName);
-
-        log.info("DB String List : " + dongNames.toString());
-
-        return dongNames;
-    }
 }

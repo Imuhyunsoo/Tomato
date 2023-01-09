@@ -46,7 +46,7 @@
                     async: true,
                     type : 'POST',
                     data : sido_name,
-                    url : "sigunguName_list",
+                    url : "sigungu_name_list",
                     dataType : "json",
                     contentType: "application/json; charset=UTF-8",
                     success : function(data) {
@@ -77,10 +77,12 @@
                 $.ajax({
                     async: true,
                     type : 'POST',
-                    data : sido_name,
-                    url : "dongName_list",
+                    data : { sidoName : sido_name, sigunguName : sigungu_name },
+                    url : "dong_name_list",
+                    // 데이터 타입 즉 서버에서 받아오는 데이터의 리턴타입을 말한다.
                     dataType : "json",
-                    contentType: "application/json; charset=UTF-8",
+                    // 서버로 보내는 타입 (파라미터 타입)을 말한다.
+                    // contentType: "application/json; charset=UTF-8",
                     success : function(data) {
 
                         var len = data.length;
@@ -88,9 +90,10 @@
                         $("#dong_name").empty();
                         $("#dong_name").append("<option value='" + "선택하세요" + "'>" + "선택하세요" + "</option>");
 
-                        for(var i = 0; i<len; i++) {
-                            var dong_name = data[i];
-                            $("#dong_name").append("<option value='" + dong_name + "'>" + dong_name + "</option>");
+                        for(var i = 0; i < len; i++) {
+                            var no = data[i].no
+                            var dong_name = data[i].dong_name;
+                            $("#dong_name").append("<option value='" + no + "'>" + dong_name + "</option>");
                         }
                     },
                     error : function(error) {
@@ -133,6 +136,7 @@
                 event.preventDefault();
 
                 let id = $("#input_id").val();
+                let no = $("#dong_name").val();
                 let password = $("#input_pw").val();
                 let name = $("#input_name").val();
                 let tel = $("#input_tel").val();
@@ -142,6 +146,7 @@
 
                 let form = {
                     id : id,
+                    no : no,
                     password : password,
                     name : name,
                     tel : tel,
@@ -174,6 +179,7 @@
 <table width="600" cellpadding="0" cellspacing="0" border="1">
     <form id="signInForm" action="join" method="post">
         <tr>
+            <%-- 아이디 중복확인 성공했을때만 회원가입 가능하도록 하는 기능 미구현 --%>
             <td>아이디</td>
             <td>
                 <input id="input_id" type="text" name="id" size="50">
@@ -197,9 +203,6 @@
                 읍/면/동
                 <select id="dong_name" name="input_dong_name">
                     <option>선택하세요</option>
-                    <c:forEach var="dong_name" items="${dong_names}">
-                        <option value="${dong_name}">${dong_name}</option>
-                    </c:forEach>
                 </select>
             </td>
         </tr>
@@ -208,6 +211,7 @@
             <td><input id="input_pw" type="password" name="password" size="50"></td>
         </tr>
         <tr>
+            <%--패스워드 체크기능 미완성--%>
             <td>패스워드 확인</td>
             <td><input id="input_pwCheck" type="password" name="pwCheck" size="50"></td>
         </tr>
@@ -225,6 +229,7 @@
 
         </tr>
         <tr>
+            <%-- 닉네임 중복확인 성공했을때만 회원가입 가능하도록 하는 기능 미구현 --%>
             <td>닉네임</td>
             <td>
                 <input id="input_nickname" type="text" name="nickname" size="50">
